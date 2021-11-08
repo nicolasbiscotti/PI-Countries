@@ -1,26 +1,27 @@
 const { DataTypes } = require("sequelize");
-// Exportamos una funcion que define el modelo
-// Luego le injectamos la conexion a sequelize.
+// Exportamos una funcion, al ejecutarla definimos el modelo Activity
 module.exports = (sequelize) => {
-  // defino el modelo
   sequelize.define(
-    "country",
+    "activity",
     {
       name: {
         type: DataTypes.STRING,
         allowNull: false,
       },
-      continent: {
-        type: DataTypes.STRING,
+      difficulty: {
+        type: DataTypes.INTEGER, // change to emun dataType
         allowNull: false,
       },
-      flagURI: {
-        type: DataTypes.STRING,
+      duration: {
+        type: DataTypes.INTEGER,
+        allowNull: false,
+      },
+      season: {
+        type: DataTypes.STRING, // change to emun dataType
         allowNull: false,
       },
     },
     {
-      // timestamps: false
       timestamps: true,
       createdAt: false,
       updatedAt: "actualizado",
