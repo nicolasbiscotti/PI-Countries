@@ -9,7 +9,7 @@ module.exports = (sequelize) => {
         allowNull: false,
       },
       difficulty: {
-        type: DataTypes.INTEGER, // change to emun dataType
+        type: DataTypes.ENUM("1", "2", "3", "4", "5"),
         allowNull: false,
       },
       duration: {
@@ -17,7 +17,7 @@ module.exports = (sequelize) => {
         allowNull: false,
       },
       season: {
-        type: DataTypes.STRING, // change to emun dataType
+        type: DataTypes.ENUM("Winter", "Spring", "Summer", "Autumn"),
         allowNull: false,
       },
     },
