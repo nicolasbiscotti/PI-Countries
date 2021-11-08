@@ -1,6 +1,6 @@
 const { Router } = require("express");
 const countriesRouter = Router();
-const { Country } = require("../db");
+const { Country, CountryActivity } = require("../db");
 const fetch = require("node-fetch");
 
 module.exports = countriesRouter;
