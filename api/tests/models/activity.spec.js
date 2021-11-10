@@ -24,7 +24,7 @@ describe("Activity model", () => {
         })
           .then(() => Activity.findOne({ where: { difficulty: 3 } }))
           .then((activity) => {
-            // console.log(activity);
+            console.log(activity.JSON());
             expect(activity.name).toEqual("SKy");
           });
       });

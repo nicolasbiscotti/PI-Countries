@@ -23,7 +23,7 @@ describe("Country model", () => {
         })
           .then(() => Country.findOne({ where: { name: "Argentina" } }))
           .then((country) => {
-            // console.log(country);
+            console.log(country.toJSON());
             expect(country.flagURI).toEqual("https://flagcdn.com/ar.svg");
           });
       });
