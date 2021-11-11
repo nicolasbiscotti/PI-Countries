@@ -1,48 +1,47 @@
 const { Router } = require("express");
 const countriesRouter = Router();
-const { Country, CountryActivity, Activity } = require("../db");
-const fetch = require("node-fetch");
+const { Country, CountryActivity, Activity, Op } = require("../db");
+const axios = require("axios");
 
 module.exports = countriesRouter;
 
-countriesRouter.get("/", (req, res) => {
-  const resource = req.query.name ? `name/${req.query.name}` : "all";
+countriesRouter.get("/", async (req, res) => {
+  const { name, page, step } = req.query;
+  // to build the URL as requested by all the countries
+  // or those that match a name
+  // const resource = req.query.name ? `name/${req.query.name}` : "all";
+  const resource = "all";
   const url = `https://restcountries.com/v3/${resource}`;
 
-  console.log(url);
-  // utilizaando la funcion axuliar pagination
-  // calulo la pagina que me estan pidiendo
-  const page = req.query.page
-    ? pagination(parseInt(req.query.step), parseInt(req.query.page))
+  // calculate the page they ask me
+  const pagination = page ? getPagination(parseInt(step), parseInt(page)) : {};
+
+  // SELECT * FROM countries WHERE name ILIKE '%name%';
+  // or SELECT * FROM countries; if no req.query.name
+  const nameWhereCluse = name
+    ? { where: { name: { [Op.iLike]: `%${name}%` } } }
     : {};
 
-  if (req.query.name) {
-    fetch(`https://restcountries.com/v3/name/${req.query.name}`)
-      .then((res) => res.json())
-      // data --> [{arg}, {peru}, ...]
-      .then((data) => {
-        if (data instanceof Array) {
-          res.json(toShortCountries(data));
-        } else {
-          res.status(data.status).json({ msg: "no country found" });
-        }
-      });
+  // required attributes
+  const attributes = {
+    attributes: ["countryId", "name", "flagURI", "continent"],
+  };
+
+  const isLoaded = (await Country.findAll()).length;
+  console.log(isLoaded);
+  if (!isLoaded) {
+    const countries = await axios(url);
+    await Country.bulkCreate(toCountries(countries.data));
+  }
+  const { count, rows } = await Country.findAndCountAll({
+    ...nameWhereCluse,
+    ...pagination,
+    ...attributes,
+  });
+  if (count) {
+    res.json(rows);
   } else {
-    fetch("https://restcountries.com/v3/all")
-      .then((res) => res.json())
-      // data --> [{arg}, {peru}, ...]
-      .then((data) => countriesPersist(data))
-      .then((promisifyCountries) =>
-        // promisifyCountries --> [ promesa, promesa, .... ]
-        Promise.all(promisifyCountries)
-      )
-      .then(() =>
-        Country.findAll({
-          ...page,
-          attributes: ["countryId", "name", "flagURI", "continent"],
-        })
-      )
-      .then((countries) => res.json(countries));
+    res.json({ msg: "no country found" });
   }
 });
 
@@ -66,17 +65,17 @@ countriesRouter.get("/:countryId", async (req, res) => {
 });
 
 // pagination function
-const pagination = (step, page) => {
+const getPagination = (step, page) => {
   let offset = page !== 0 ? page * step - 1 : 0;
   let limit = page !== 0 ? step : step - 1;
   return { offset, limit };
 };
 
-// map an array of cuontries object to an array of promises that
-// persist countries
-const countriesPersist = (countries) => {
-  return countries.map((country) =>
-    Country.create({
+// map an array of cuontries object with full properties
+// to one with some of those
+const toCountries = (countries) => {
+  return countries.map((country) => {
+    return {
       countryId: country.cca3,
       name: country.name.common,
       flagURI: country.flags[0],
@@ -85,16 +84,6 @@ const countriesPersist = (countries) => {
       subregion: country.subregion,
       area: country.area,
       population: country.population,
-    })
-  );
-};
-const toShortCountries = (countries) => {
-  return countries.map((country) => {
-    return {
-      countryId: country.cca3,
-      name: country.name.common,
-      flagURI: country.flags[0],
-      continent: country.continents[0],
     };
   });
 };
