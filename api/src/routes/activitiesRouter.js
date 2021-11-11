@@ -15,6 +15,7 @@ activitiesRouter.post("/", async (req, res) => {
   const countries = await Country.findAll({
     where: { id: { [Op.in]: countriesId } },
   });
-  await newActivity.addCountries(countries); // analizar si va este awaite
-  res.json({ msn: "relashioshep concreted" });
+  // addCountries --> agrega paises sin borrar los existentes
+  // setCountries --> borra los existentes y agrega los que pasamos
+  res.json(await newActivity.addCountries(countries));
 });

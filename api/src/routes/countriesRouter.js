@@ -6,7 +6,15 @@ const fetch = require("node-fetch");
 module.exports = countriesRouter;
 
 countriesRouter.get("/", (req, res) => {
-  // const name = req.query.name ? `name/${req.query.name}` : all;
+  const resource = req.query.name ? `name/${req.query.name}` : "all";
+  const url = `https://restcountries.com/v3/${resource}`;
+
+  console.log(url);
+  // utilizaando la funcion axuliar pagination
+  // calulo la pagina que me estan pidiendo
+  const page = req.query.page
+    ? pagination(parseInt(req.query.step), parseInt(req.query.page))
+    : {};
 
   if (req.query.name) {
     fetch(`https://restcountries.com/v3/name/${req.query.name}`)
@@ -30,6 +38,7 @@ countriesRouter.get("/", (req, res) => {
       )
       .then(() =>
         Country.findAll({
+          ...page,
           attributes: ["countryId", "name", "flagURI", "continent"],
         })
       )
@@ -40,19 +49,28 @@ countriesRouter.get("/", (req, res) => {
 countriesRouter.get("/:countryId", async (req, res) => {
   const { countryId } = req.params;
   console.log(`ESTOY EN GET /:countryId: ${countryId}`);
-  const country = await Country.findOne({
-    where: { id: countryId },
-  });
-  const activities = await country.getActivities();
-  const countryActivities = {
-    codigo: country.countryId,
-    name: country.name,
-    flagURI: country.flagURI,
-    continent: country.continent,
-    activities,
-  };
-  res.json(countryActivities);
+  res.json(
+    await Country.findOne({
+      where: { id: countryId },
+      // de esta manera no trae la tabla intermedia otra vez..
+      include: [
+        {
+          model: Activity,
+          through: {
+            attributes: [],
+          },
+        },
+      ],
+    })
+  );
 });
+
+// pagination function
+const pagination = (step, page) => {
+  let offset = page !== 0 ? page * step - 1 : 0;
+  let limit = page !== 0 ? step : step - 1;
+  return { offset, limit };
+};
 
 // map an array of cuontries object to an array of promises that
 // persist countries
