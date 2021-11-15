@@ -1,7 +1,19 @@
 #search-wrap {
     display: flex;
     justify-content: center;
-
-    margin-top: 20px;
-    margin-bottom: 20px;
+    background-color: gainsboro;
+    padding-top: 20px;
+    padding-bottom: 20px;
+}
+#search-wrap span {
+    background-color: deepskyblue;
+    color: ghostwhite;
+    font-weight: 900;    
+    padding: 20px;
+    border-radius: 20px;
+    min-width: 100px;
+}
+#search-wrap span:hover {
+    background-color:dodgerblue;
+    cursor: pointer;
 }

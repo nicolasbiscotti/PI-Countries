@@ -6,3 +6,20 @@
     margin-top: 20px;
     margin-bottom: 40px;
 }
+#pagination-wrap span {
+    background-color: deepskyblue;
+    color: ghostwhite;
+    font-weight: 900;    
+    padding: 20px;
+    border-radius: 20px;
+    min-width: 100px;
+}
+#pagination-wrap span:hover {
+    background-color:dodgerblue;
+    cursor: pointer;
+}
+
+#pagination-wrap span.disabled {
+    background-color:gainsboro;
+    cursor: not-allowed;
+}

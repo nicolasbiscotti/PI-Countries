@@ -18,7 +18,7 @@ export default function CountriesDisplay() {
   return (
     <div id="countries-display-wrap">
       {isLoading ? (
-        <h1>Loading</h1>
+        <h2>Loading</h2>
       ) : (
         countries.map((country) => (
           <Country

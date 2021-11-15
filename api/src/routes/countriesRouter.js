@@ -39,7 +39,7 @@ countriesRouter.get("/", async (req, res) => {
     ...attributes,
   });
   if (count) {
-    res.json(rows);
+    res.json({ rows, count,  hasNext: hasNext(step, page, count), hasPrevious: hasPrevious(page) });
   } else {
     res.json({ msg: "no country found" });
   }
@@ -69,6 +69,13 @@ const getPagination = (step, page) => {
   let offset = page !== 0 ? page * step - 1 : 0;
   let limit = page !== 0 ? step : step - 1;
   return { offset, limit };
+};
+const hasNext = (step, page, total) => {
+  pageAmount = Number.parseInt(total / step);
+  return page < pageAmount ? true : false;
+};
+const hasPrevious = (page) => {
+  return page > 0 ? true : false;
 };
 
 // map an array of cuontries object with full properties
