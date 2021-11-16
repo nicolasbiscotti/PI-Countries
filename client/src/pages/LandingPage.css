@@ -1,0 +1,22 @@
+#landing-page-wrap {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+}
+#landing-page-title {
+    margin: 0;
+    padding: 10px;
+}
+#landing-page-wrap a {
+    padding: 20px;
+    background-color: deepskyblue;
+    color: ghostwhite;
+    font-weight: 900; 
+    border-radius: 20px;
+    font-size: 1.2em;
+    text-decoration: none;
+}
+#landing-page-wrap a:hover {
+    background-color:dodgerblue;
+    cursor: pointer;
+}

@@ -1,13 +1,15 @@
+import { Routes, Route } from "react-router-dom";
 import "./App.css";
-import CountriesDisplay from "./components/CountriesDisplay/CountriesDisplay";
-import Search from "./components/Search/Search";
+import Home from "./pages/Home/Home";
+import LandingPage from "./pages/LandingPage";
 
 function App() {
   return (
     <div className="App">
-      <h1>Henry Countries</h1>
-      <Search />
-      <CountriesDisplay />
+      <Routes>
+        <Route path="/" element={<LandingPage />} />
+        <Route path="/countries/*" element={<Home />} />
+      </Routes>
     </div>
   );
 }

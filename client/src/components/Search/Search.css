@@ -5,6 +5,11 @@
     padding-top: 20px;
     padding-bottom: 20px;
 }
+#search-wrap h1 {
+    margin: 0;
+    padding: 20px 0 25px 0;
+    background-color: gainsboro;
+  }
 #search-wrap span {
     background-color: deepskyblue;
     color: ghostwhite;
