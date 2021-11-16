@@ -22,6 +22,8 @@ export default function CountriesDisplay() {
       ) : (
         countries.map((country) => (
           <Country
+            key={country.countryId}
+            countryId={country.id}
             name={country.name}
             continent={country.continent}
             flagURI={country.flagURI}

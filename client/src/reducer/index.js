@@ -1,4 +1,5 @@
 import {
+  FETCH_COUNTRY_DETAIL,
   FORWARD_PAGE,
   GOBACK_PAGE,
   RESET_PAGINATION,
@@ -11,7 +12,7 @@ import {
 
 const initialState = {
   countriesList: [],
-  countryDetails: {},
+  countryDetail: {},
   isLoading: false,
   pagination: { page: 0, name: "", hasNext: true, hasPrevious: false },
 };
@@ -57,6 +58,11 @@ export default function rootReducer(state = initialState, action) {
       return {
         ...state,
         pagination: { ...state.pagination, page: action.payload },
+      };
+    case FETCH_COUNTRY_DETAIL:
+      return {
+        ...state,
+        countryDetail: action.payload,
       };
 
     default:

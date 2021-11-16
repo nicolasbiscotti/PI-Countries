@@ -35,6 +35,15 @@ module.exports = (sequelize) => {
       population: {
         type: DataTypes.INTEGER,
       },
+      areaKm2: {
+        type: DataTypes.VIRTUAL,
+        get() {
+          return `${this.area} km2`;
+        },
+        set(value) {
+          throw new Error("Do not try to set the `areaKm2` value!");
+        },
+      },
     },
     {
       // timestamps: false

@@ -12,6 +12,7 @@ export const FORWARD_PAGE = "FORWARD_PAGE";
 export const GOBACK_PAGE = "GOBACK_PAGE";
 export const SET_NEXT = "SET_NEXT";
 export const SET_PREV = "SET_PREV";
+export const FETCH_COUNTRY_DETAIL = "FETCH_COUNTRY_DETAIL";
 
 // Action Creators
 export function toggleLoading() {
@@ -30,7 +31,6 @@ export function showCountries(page = 0, name) {
       .get(url)
       .then((r) => r.data)
       .then((countries) => {
-        console.log("Action showCountries:" + countries.rows);
         dispatch({ type: SHOW_COUNTRIES, payload: countries.rows });
         dispatch(setNext(countries.hasNext));
         dispatch(setPrev(countries.hasPrevious));
@@ -74,5 +74,20 @@ export function setPrev(hasPrev) {
   return {
     type: SET_PREV,
     payload: hasPrev,
+  };
+}
+
+export function fetchCountryDetail(countryId) {
+  const url = `${GET_COUNTRIES}/${countryId}`;
+  return function (dispatch) {
+    dispatch(toggleLoading());
+    axios
+      .get(url)
+      .then((res) => res.data)
+      .then((countryDetail) => {
+        return { type: FETCH_COUNTRY_DETAIL, payload: countryDetail };
+      })
+      .then((action) => dispatch(action))
+      .then(() => dispatch(toggleLoading()));
   };
 }

@@ -20,6 +20,15 @@ module.exports = (sequelize) => {
         type: DataTypes.ENUM("Winter", "Spring", "Summer", "Autumn"),
         allowNull: false,
       },
+      durationTime: {
+        type: DataTypes.VIRTUAL,
+        get() {
+          return `${this.duration} sec`;
+        },
+        set(value) {
+          throw new Error("Do not try to set the `areaKm2` value!");
+        },
+      },
     },
     {
       timestamps: true,

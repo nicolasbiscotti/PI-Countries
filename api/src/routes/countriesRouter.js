@@ -24,7 +24,7 @@ countriesRouter.get("/", async (req, res) => {
 
   // required attributes
   const attributes = {
-    attributes: ["countryId", "name", "flagURI", "continent"],
+    attributes: ["id", "countryId", "name", "flagURI", "continent"],
   };
 
   const isLoaded = (await Country.findAll()).length;
@@ -39,7 +39,12 @@ countriesRouter.get("/", async (req, res) => {
     ...attributes,
   });
   if (count) {
-    res.json({ rows, count,  hasNext: hasNext(step, page, count), hasPrevious: hasPrevious(page) });
+    res.json({
+      rows,
+      count,
+      hasNext: hasNext(step, page, count),
+      hasPrevious: hasPrevious(page),
+    });
   } else {
     res.json({ msg: "no country found" });
   }
