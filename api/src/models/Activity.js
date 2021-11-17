@@ -23,7 +23,7 @@ module.exports = (sequelize) => {
       durationTime: {
         type: DataTypes.VIRTUAL,
         get() {
-          return `${this.duration} sec`;
+          return `${this.duration} minutes`;
         },
         set(value) {
           throw new Error("Do not try to set the `areaKm2` value!");

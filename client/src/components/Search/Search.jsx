@@ -26,7 +26,7 @@ export default function Search(props) {
           <input
             id="search_country_name"
             name="name"
-            type="text"
+            type="search"
             placeholder="search countries by name.."
             value={name}
             onChange={(e) => onChangeHandler(e)}
