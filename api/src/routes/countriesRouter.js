@@ -53,20 +53,30 @@ countriesRouter.get("/", async (req, res) => {
 countriesRouter.get("/:countryId", async (req, res) => {
   const { countryId } = req.params;
   console.log(`ESTOY EN GET /:countryId: ${countryId}`);
-  res.json(
-    await Country.findOne({
-      where: { id: countryId },
-      // de esta manera no trae la tabla intermedia otra vez..
-      include: [
-        {
-          model: Activity,
-          through: {
-            attributes: [],
+
+  // estoy probando la view /countries/:countryId HAY QUE SACARLO
+  const isLoaded = (await Country.findAll()).length;
+  if (!isLoaded) {
+    const url = `https://restcountries.com/v3/alpha/${countryId}`;
+    const countries = await axios(url);
+    res.json( toCountries(countries.data));
+  } // SACARLO
+  else {
+    res.json(
+      await Country.findOne({
+        where: { id: countryId },
+        // de esta manera no trae la tabla intermedia otra vez..
+        include: [
+          {
+            model: Activity,
+            through: {
+              attributes: [],
+            },
           },
-        },
-      ],
-    })
-  );
+        ],
+      })
+    );
+  }
 });
 
 // pagination function

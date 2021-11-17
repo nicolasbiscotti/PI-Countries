@@ -17,20 +17,22 @@ export default function CountriesDisplay() {
 
   return (
     <div id="countries-display-wrap">
-      {isLoading ? (
-        <h2>Loading</h2>
-      ) : (
-        countries.map((country) => (
-          <Country
-            key={country.countryId}
-            countryId={country.id}
-            name={country.name}
-            continent={country.continent}
-            flagURI={country.flagURI}
-          />
-        ))
-      )}
-      <PaginationBar />
+      <div id="countries-display-center">
+        {isLoading ? (
+          <h2>Loading</h2>
+        ) : (
+          countries.map((country) => (
+            <Country
+              key={country.countryId}
+              countryId={country.id}
+              name={country.name}
+              continent={country.continent}
+              flagURI={country.flagURI}
+            />
+          ))
+        )}
+        <PaginationBar />
+      </div>
     </div>
   );
 }
