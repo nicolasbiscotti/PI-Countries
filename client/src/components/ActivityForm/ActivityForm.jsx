@@ -14,7 +14,7 @@ export default function ActivityForm() {
     duration: 15,
     difficulty: difficulty[0],
     season: season[0],
-    countries: [],
+    countriesId: [],
   };
 
   const [activity, setActivity] = useState(initialState);
@@ -31,13 +31,14 @@ export default function ActivityForm() {
   const addCountry = (e) => {
     setActivity((activity) => {
       // to avoid repetitions
-      const countries =
-        activity.countries.indexOf(e.target.value) >= 0
-          ? activity.countries
-          : [...activity.countries, e.target.value];
+      const countriesId =
+        activity.countriesId.indexOf(e.target.value) >= 0
+          ? activity.countriesId
+          : [...activity.countriesId, e.target.value];
+      console.log(`ActivityForm: ${activity.countriesId}`);
       return {
         ...activity,
-        countries,
+        countriesId,
       };
     });
   };
@@ -46,7 +47,7 @@ export default function ActivityForm() {
       console.log(e.target);
       return {
         ...activity,
-        countries: activity.countries.filter(
+        countriesId: activity.countriesId.filter(
           (c) => c !== e.target.getAttribute("name")
         ),
       };
@@ -141,14 +142,14 @@ export default function ActivityForm() {
             </select>
           </div>
           <div className="field-set">
-            {activity.countries.map((countryId) => (
+            {activity.countriesId.map((country) => (
               <span
                 onClick={(e) => removeCountry(e)}
                 className="selected-countries"
-                key={countryId}
-                name={countryId}
+                key={country}
+                name={country}
               >
-                {countriesList[countryId - 1].name} X
+                {country} X
               </span>
             ))}
           </div>

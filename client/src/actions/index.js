@@ -22,7 +22,7 @@ export function toggleLoading() {
 }
 
 export function showCountries(page = 0, name) {
-  var url = `${GET_COUNTRIES}?page=${page}&step=${PAGINATION_STEP}`;
+  let url = `${GET_COUNTRIES}?page=${page}&step=${PAGINATION_STEP}`;
   url += name ? `&name=${name}` : "";
   console.log("Action showCountries:" + url);
   return function (dispatch) {
@@ -36,6 +36,22 @@ export function showCountries(page = 0, name) {
         dispatch(setPrev(countries.hasPrevious));
       })
       .then(() => dispatch(toggleLoading()));
+  };
+}
+
+export function fetchCountries() {
+  let url = GET_COUNTRIES;
+  return function (dispatch) {
+    axios
+      .get(url)
+      .then((r) => r.data.rows)
+      .then((countries) => {
+        return {
+          type: SHOW_COUNTRIES,
+          payload: countries,
+        };
+      })
+      .then((action) => dispatch(action));
   };
 }
 
@@ -89,5 +105,12 @@ export function fetchCountryDetail(countryId) {
       })
       .then((action) => dispatch(action))
       .then(() => dispatch(toggleLoading()));
+  };
+}
+
+export function countryByContinent(countries) {
+  return {
+    type: SHOW_COUNTRIES,
+    payload: countries,
   };
 }

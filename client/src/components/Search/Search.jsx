@@ -4,20 +4,26 @@ import { resetPagination, setSearchName, showCountries } from "../../actions";
 import "./Search.css";
 
 export default function Search(props) {
-  const [name, setName] = useState("");
+  const [countryName, setCountryName] = useState("");
   const [search, toggleSearch] = useState(true);
 
   const dispatch = useDispatch();
 
   const onChangeHandler = (event) => {
-    setName((name) => (name = event.target.value));
+    setCountryName((countryName) => (countryName = event.target.value));
   };
   const onSearchHandler = (event) => {
     event.preventDefault();
     dispatch(resetPagination());
-    dispatch(setSearchName(name));
-    dispatch(showCountries(0, name));
+    dispatch(setSearchName(countryName));
+    dispatch(showCountries(0, countryName));
     toggleSearch((search) => (search = false));
+  };
+  const goHomeHandler = () => {
+    setCountryName((countryName) => (countryName = ""));
+    toggleSearch((search) => (search = true));
+    dispatch(resetPagination());
+    dispatch(showCountries());
   };
   return (
     <div id="search-wrap">
@@ -28,7 +34,7 @@ export default function Search(props) {
             name="name"
             type="search"
             placeholder="search countries by name.."
-            value={name}
+            value={countryName}
             onChange={(e) => onChangeHandler(e)}
           />{" "}
           <button type="button" onClick={(e) => onSearchHandler(e)}>
@@ -36,9 +42,7 @@ export default function Search(props) {
           </button>
         </>
       ) : (
-        <span onClick={() => toggleSearch((search) => (search = true))}>
-          {name} X
-        </span>
+        <span onClick={goHomeHandler}>{countryName} X</span>
       )}
     </div>
   );

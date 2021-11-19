@@ -6,14 +6,15 @@ import { showCountries } from "../../actions";
 import "./CountriesDisplay.css";
 import { useEffect } from "react";
 
-export default function CountriesDisplay() {
-  const dispatch = useDispatch();
-  const countries = useSelector((state) => state.countriesList);
+// muestra y pagina los countries que le pasan como prop
+export default function CountriesDisplay({ countries }) {
+  // const dispatch = useDispatch();
+  // const countries = useSelector((state) => state.countriesList);
   const isLoading = useSelector((state) => state.isLoading);
 
-  useEffect(() => {
-    dispatch(showCountries());
-  }, []);
+  // useEffect(() => {
+  //   dispatch(showCountries());
+  // }, []);
 
   return (
     <div id="countries-display-wrap">
@@ -31,16 +32,7 @@ export default function CountriesDisplay() {
             />
           ))
         )}
-        <PaginationBar />
       </div>
     </div>
   );
 }
-
-// const mapStateToProps = (state) => {
-//   return {
-//     countries: [...state.countriesList],
-//   };
-// };
-
-// export default connect(mapStateToProps, { showCountries })(CountriesDisplay);
