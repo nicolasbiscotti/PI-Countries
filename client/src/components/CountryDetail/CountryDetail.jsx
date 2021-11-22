@@ -1,5 +1,6 @@
 import React from "react";
 import { useSelector } from "react-redux";
+import { Link } from "react-router-dom";
 import ActivityDetail from "../ActivityDetail/ActivityDetail";
 
 import "./CountryDetail.css";
@@ -39,6 +40,7 @@ export default function CountryDetail({ country, activities }) {
               <h3>No activities availables yet...</h3>
             )}
           </div>
+          <Link to="../countries">Go Back</Link>
         </React.Fragment>
       )}
     </div>

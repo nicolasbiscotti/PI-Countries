@@ -1,71 +1,81 @@
 import {
-  FETCH_COUNTRY_DETAIL,
   FORWARD_PAGE,
   GOBACK_PAGE,
   RESET_PAGINATION,
-  SET_NAME,
-  SET_NEXT,
-  SET_PREV,
-  SHOW_COUNTRIES,
-  TOGGLE_LOADING,
+  GET_COUNTRIES,
+  RECIVED_COUNTRIES,
+  RECIVED_DETAIL,
 } from "../actions";
+
+const STEP = 10;
 
 const initialState = {
   countriesList: [],
+  message: "",
   countryDetail: {},
   isLoading: false,
-  pagination: { page: 0, name: "", hasNext: true, hasPrevious: false },
+  pagination: {
+    start: 0,
+    end: STEP - 1,
+    hasNext: true,
+    hasPrev: false,
+  },
 };
 
 export default function rootReducer(state = initialState, action) {
   switch (action.type) {
-    case SHOW_COUNTRIES:
+    case GET_COUNTRIES:
       return {
         ...state,
+        isLoading: true,
+      };
+    case RECIVED_COUNTRIES:
+      return {
+        ...state,
+        isLoading: false,
         countriesList: action.payload,
       };
-    case TOGGLE_LOADING:
+    case RECIVED_DETAIL:
       return {
         ...state,
-        isLoading: !state.isLoading,
+        isLoading: false,
+        countryDetail: action.payload,
       };
     case RESET_PAGINATION:
       return {
         ...state,
-        pagination: { page: 0, name: "", hasNext: true, hasPrevious: false },
-      };
-    case SET_NAME:
-      return {
-        ...state,
-        pagination: { ...state.pagination, name: action.payload },
-      };
-    case SET_NEXT:
-      return {
-        ...state,
-        pagination: { ...state.pagination, hasNext: action.payload },
-      };
-    case SET_PREV:
-      return {
-        ...state,
-        pagination: { ...state.pagination, hasPrevious: action.payload },
+        pagination: {
+          start: 0,
+          end: STEP - 1,
+          hasNext: true,
+          hasPrev: false,
+        },
       };
     case FORWARD_PAGE:
       return {
         ...state,
-        pagination: { ...state.pagination, page: action.payload },
+        pagination: {
+          ...state.pagination,
+          start: state.pagination.end,
+          end: state.pagination.end + STEP,
+        },
       };
     case GOBACK_PAGE:
       return {
         ...state,
-        pagination: { ...state.pagination, page: action.payload },
-      };
-    case FETCH_COUNTRY_DETAIL:
-      return {
-        ...state,
-        countryDetail: action.payload,
+        pagination: {
+          ...state.pagination,
+          start:
+            state.pagination.start - STEP >= 0
+              ? state.pagination.start - STEP
+              : 0,
+          end: state.pagination.start,
+        },
       };
 
     default:
       return { ...state };
   }
 }
+
+

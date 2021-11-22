@@ -1,29 +1,26 @@
 import React, { useState } from "react";
 import { useDispatch } from "react-redux";
-import { resetPagination, setSearchName, showCountries } from "../../actions";
+import { fetchCountries } from "../../actions";
 import "./Search.css";
 
 export default function Search(props) {
-  const [countryName, setCountryName] = useState("");
-  const [search, toggleSearch] = useState(true);
-
   const dispatch = useDispatch();
 
+  const [searchByName, setSearchByName] = useState("");
+  const [search, toggleSearch] = useState(true);
+
   const onChangeHandler = (event) => {
-    setCountryName((countryName) => (countryName = event.target.value));
+    setSearchByName(() => event.target.value);
   };
   const onSearchHandler = (event) => {
     event.preventDefault();
-    dispatch(resetPagination());
-    dispatch(setSearchName(countryName));
-    dispatch(showCountries(0, countryName));
-    toggleSearch((search) => (search = false));
+    dispatch(fetchCountries(searchByName));
+    toggleSearch(() => false);
   };
-  const goHomeHandler = () => {
-    setCountryName((countryName) => (countryName = ""));
-    toggleSearch((search) => (search = true));
-    dispatch(resetPagination());
-    dispatch(showCountries());
+  const turnOffSearch = () => {
+    setSearchByName(() => "");
+    toggleSearch(() => true);
+    dispatch(fetchCountries());
   };
   return (
     <div id="search-wrap">
@@ -34,7 +31,7 @@ export default function Search(props) {
             name="name"
             type="search"
             placeholder="search countries by name.."
-            value={countryName}
+            value={searchByName}
             onChange={(e) => onChangeHandler(e)}
           />{" "}
           <button type="button" onClick={(e) => onSearchHandler(e)}>
@@ -42,7 +39,7 @@ export default function Search(props) {
           </button>
         </>
       ) : (
-        <span onClick={goHomeHandler}>{countryName} X</span>
+        <span onClick={turnOffSearch}>{searchByName} X</span>
       )}
     </div>
   );

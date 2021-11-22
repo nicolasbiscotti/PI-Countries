@@ -37,6 +37,14 @@ countriesRouter.get("/", async (req, res) => {
     ...nameWhereCluse,
     ...pagination,
     ...attributes,
+    include: [
+      {
+        model: Activity,
+        through: {
+          attributes: [],
+        },
+      },
+    ],
   });
   if (count) {
     res.json({
@@ -45,7 +53,7 @@ countriesRouter.get("/", async (req, res) => {
       hasNext: hasNext(step, page, count),
       hasPrevious: hasPrevious(page),
     });
-  } else {
+  } else { // si piden por nombre y no hay ninguno
     res.json({ msg: "no country found" });
   }
 });

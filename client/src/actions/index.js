@@ -1,57 +1,55 @@
 import axios from "axios";
 
 export const PAGINATION_STEP = 10;
-export const GET_COUNTRIES = "http://localhost:3001/countries";
+export const GET_COUNTRIES_URL = "http://localhost:3001/countries";
 
 // Actions
-export const SHOW_COUNTRIES = "SHOW_COUNTRIES";
-export const TOGGLE_LOADING = "TOGGLE_LOADING";
+// export const SHOW_COUNTRIES = "SHOW_COUNTRIES";
+// export const TOGGLE_LOADING = "TOGGLE_LOADING";
+// export const FETCH_COUNTRY_DETAIL = "FETCH_COUNTRY_DETAIL";
+// export const FETCH_COUNTRIES = "FETCH_COUNTRIES";
+// export const FILTERED = "FILTERED";
 export const RESET_PAGINATION = "RESET_PAGINATION";
-export const SET_NAME = "SET_NAME";
 export const FORWARD_PAGE = "FORWARD_PAGE";
 export const GOBACK_PAGE = "GOBACK_PAGE";
-export const SET_NEXT = "SET_NEXT";
-export const SET_PREV = "SET_PREV";
-export const FETCH_COUNTRY_DETAIL = "FETCH_COUNTRY_DETAIL";
+export const GET_COUNTRIES = "GET_COUNTRIES";
+export const RECIVED_COUNTRIES = "RECIVED_COUNTRIES";
+export const RECIVED_DETAIL = "RECIVED_DETAIL";
 
 // Action Creators
-export function toggleLoading() {
+export function getCountries() {
   return {
-    type: TOGGLE_LOADING,
+    type: GET_COUNTRIES,
+  };
+}
+export function recivedCountries(countries) {
+  return {
+    type: RECIVED_COUNTRIES,
+    payload: countries,
   };
 }
 
-export function showCountries(page = 0, name) {
-  let url = `${GET_COUNTRIES}?page=${page}&step=${PAGINATION_STEP}`;
-  url += name ? `&name=${name}` : "";
-  console.log("Action showCountries:" + url);
+export function fetchCountries(name, filterBy) {
+  let url = name ? `${GET_COUNTRIES_URL}?name=${name}` : GET_COUNTRIES_URL;
   return function (dispatch) {
-    dispatch(toggleLoading());
+    dispatch(getCountries());
+    dispatch(resetPagination());
     axios
       .get(url)
       .then((r) => r.data)
-      .then((countries) => {
-        dispatch({ type: SHOW_COUNTRIES, payload: countries.rows });
-        dispatch(setNext(countries.hasNext));
-        dispatch(setPrev(countries.hasPrevious));
+      .then((data) => {
+        let countries = data.rows || [];
+        let length = data.count;
+        let message = data.msg || "";
+        if (filterBy) {
+          dispatch(
+            recivedCountries(filterCountriesBy(countries, filterBy, filters))
+          );
+        } else {
+          dispatch(recivedCountries(countries));
+        }
       })
-      .then(() => dispatch(toggleLoading()));
-  };
-}
-
-export function fetchCountries() {
-  let url = GET_COUNTRIES;
-  return function (dispatch) {
-    axios
-      .get(url)
-      .then((r) => r.data.rows)
-      .then((countries) => {
-        return {
-          type: SHOW_COUNTRIES,
-          payload: countries,
-        };
-      })
-      .then((action) => dispatch(action));
+      .catch((e) => console.log(e));
   };
 }
 
@@ -60,57 +58,136 @@ export function resetPagination() {
     type: RESET_PAGINATION,
   };
 }
-export function setSearchName(name) {
-  return {
-    type: SET_NAME,
-    payload: name,
-  };
-}
 
-export function forwardPage(currentPage) {
+export function forwardPage() {
   return {
     type: FORWARD_PAGE,
-    payload: currentPage + 1,
   };
 }
-export function gobackPage(currentPage) {
+export function goBackPage() {
   return {
     type: GOBACK_PAGE,
-    payload: currentPage - 1,
   };
 }
 
-export function setNext(hasNext) {
+export function recivedDetail(country) {
   return {
-    type: SET_NEXT,
-    payload: hasNext,
-  };
-}
-export function setPrev(hasPrev) {
-  return {
-    type: SET_PREV,
-    payload: hasPrev,
+    type: RECIVED_DETAIL,
+    payload: country,
   };
 }
 
 export function fetchCountryDetail(countryId) {
-  const url = `${GET_COUNTRIES}/${countryId}`;
+  const url = `${GET_COUNTRIES_URL}/${countryId}`;
   return function (dispatch) {
-    dispatch(toggleLoading());
+    dispatch(getCountries());
     axios
       .get(url)
       .then((res) => res.data)
-      .then((countryDetail) => {
-        return { type: FETCH_COUNTRY_DETAIL, payload: countryDetail };
-      })
-      .then((action) => dispatch(action))
-      .then(() => dispatch(toggleLoading()));
+      .then((countryDetail) => dispatch(recivedDetail(countryDetail)))
+      .catch((e) => console.log(e));
   };
 }
+// filterBy -> {continent: 'un continente', population: 1 || -1, etc}
+const filterCountriesBy = (countries, filterBy, filters) => {
+  let filtered = [...countries];
+  filterBy = filterBy || {};
 
-export function countryByContinent(countries) {
-  return {
-    type: SHOW_COUNTRIES,
-    payload: countries,
+  if (filterBy.continent) {
+    filtered = filters.filterByContinent(filtered, filterBy.continent);
+  }
+
+  if (filterBy.activityId) {
+    filtered = filters.filterByActivity(filtered, filterBy.activityId);
+  }
+
+  if (filterBy.population) {
+    filtered = filters.orderByPopulation(filtered, filterBy.population);
+  }
+
+  if (filterBy.name) {
+    filtered = filters.orderByName(filtered, filterBy.name);
+  }
+
+  return filtered;
+};
+
+const filterByContinent = (countries, continent) =>
+  countries.filter((country) => country.continent === continent);
+
+  const filterByActivity = (countries, activityId) => {
+    return countries.filter((c) =>
+      c.activities.map((a) => a.id).includes(Number.parseInt(activityId))
+    );
   };
-}
+
+const orderByPopulation = (countries, order) =>
+  countries.sort(function (a, b) {
+    return order * (a.population - b.population);
+  });
+
+const orderByName = (countries, order) =>
+  countries.sort(function (a, b) {
+    var nameA = a.name.toUpperCase();
+    var nameB = b.name.toUpperCase();
+    if (nameA < nameB) {
+      return -1 * order;
+    }
+    if (nameA > nameB) {
+      return 1 * order;
+    }
+    return 0;
+  });
+const filters = {
+  filterByContinent,
+  filterByActivity,
+  orderByPopulation,
+  orderByName,
+};
+
+// export function showCountries(page = 0, name) {
+//   let url = `${GET_COUNTRIES_URL}?page=${page}&step=${PAGINATION_STEP}`;
+//   url += name ? `&name=${name}` : "";
+//   console.log("Action showCountries:" + url);
+//   return function (dispatch) {
+//     dispatch(toggleLoading());
+//     axios
+//       .get(url)
+//       .then((r) => r.data)
+//       .then((data) => {
+//         let countries = data.rows || [];
+//         let message = data.msg || "";
+//         dispatch({ type: SHOW_COUNTRIES, payload: { countries, message } });
+//         dispatch(setNext(countries.hasNext));
+//         dispatch(setPrev(countries.hasPrevious));
+//       })
+//       .then(() => dispatch(toggleLoading()));
+//   };
+// }
+// export function countryByContinent(countries) {
+//   return {
+//     type: SHOW_COUNTRIES,
+//     payload: countries,
+//   };
+// }
+// export function filteredCountriesBy(filterBy) {
+//   let url = GET_COUNTRIES_URL;
+//   return function (dispatch) {
+//     dispatch(toggleLoading());
+//     dispatch(resetPagination());
+//     axios
+//       .get(url)
+//       .then((r) => r.data)
+//       .then((data) => {
+//         let countries = data.rows || [];
+//         let length = data.count;
+//         let message = data.msg || "";
+//         return {
+//           type: FILTERED,
+//           payload: { countries, length, message, filterBy },
+//         };
+//       })
+//       .then((action) => dispatch(action))
+//       .then(() => dispatch(toggleLoading()));
+//   };
+// }
