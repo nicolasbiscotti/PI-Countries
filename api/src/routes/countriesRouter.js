@@ -24,7 +24,7 @@ countriesRouter.get("/", async (req, res) => {
 
   // required attributes
   const attributes = {
-    attributes: ["id", "countryId", "name", "flagURI", "continent"],
+    attributes: ["id", "countryId", "name", "flagURI", "continent", "population"],
   };
 
   const isLoaded = (await Country.findAll()).length;

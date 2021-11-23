@@ -1,15 +1,19 @@
 #country-detail-wrap {
-  margin-top: 20px;
+  padding-top: 20px;
   display: flex;
   flex-wrap: wrap;
   justify-content: space-around;
+  /* background-image: url("http://localhost:3000/images/mapa-y-camara.jpg");
+  background-size: cover;
+  background-position: center;
+  height: 100vh; */
 }
 #country-detail-center {
-  width: 40%;
+  width: 40vw;
 }
 #activity-detail-center {
-  width: 40%;
+  width: 40vw;
 }
 #country-detail-center img {
-    width: 60%;
+    width: 40vw;
 }

@@ -2,7 +2,16 @@
   display: flex;
   flex-wrap: wrap;
   justify-content: center;
-  width: 80%;
+  align-items: center;
+  background-image: url("http://localhost:3000/images/mapa-y-camara.jpg");
+  background-size: cover;
+  background-position: center;
+  height: 100vh;
+}
+
+#activity-form {
+  padding: 20px 40px;
+  background-color: aliceblue;
 }
 
 #activity-form div.field-set {
@@ -18,9 +27,8 @@ span.selected-countries {
     padding: 10px;
     background-color: deepskyblue;
     color: ghostwhite;
-    font-weight: 900; 
-    border-radius: 20px;
-    font-size: 1.2em;
+    font-weight: 600;
+    font-size: 0.8em;
     margin: 0 10px;
 }
 span.selected-countries:hover {

@@ -4,11 +4,7 @@ export const PAGINATION_STEP = 10;
 export const GET_COUNTRIES_URL = "http://localhost:3001/countries";
 
 // Actions
-// export const SHOW_COUNTRIES = "SHOW_COUNTRIES";
-// export const TOGGLE_LOADING = "TOGGLE_LOADING";
-// export const FETCH_COUNTRY_DETAIL = "FETCH_COUNTRY_DETAIL";
-// export const FETCH_COUNTRIES = "FETCH_COUNTRIES";
-// export const FILTERED = "FILTERED";
+export const FILTERED = "FILTERED";
 export const RESET_PAGINATION = "RESET_PAGINATION";
 export const FORWARD_PAGE = "FORWARD_PAGE";
 export const GOBACK_PAGE = "GOBACK_PAGE";
@@ -22,14 +18,21 @@ export function getCountries() {
     type: GET_COUNTRIES,
   };
 }
-export function recivedCountries(countries) {
+export function recivedCountries(countries, message) {
   return {
     type: RECIVED_COUNTRIES,
-    payload: countries,
+    payload: { countries, message },
   };
 }
 
-export function fetchCountries(name, filterBy) {
+export function filteredCountries(filterBy) {
+  return {
+    type: FILTERED,
+    payload: filterBy,
+  };
+}
+
+export function fetchCountries(name) {
   let url = name ? `${GET_COUNTRIES_URL}?name=${name}` : GET_COUNTRIES_URL;
   return function (dispatch) {
     dispatch(getCountries());
@@ -39,15 +42,8 @@ export function fetchCountries(name, filterBy) {
       .then((r) => r.data)
       .then((data) => {
         let countries = data.rows || [];
-        let length = data.count;
         let message = data.msg || "";
-        if (filterBy) {
-          dispatch(
-            recivedCountries(filterCountriesBy(countries, filterBy, filters))
-          );
-        } else {
-          dispatch(recivedCountries(countries));
-        }
+        dispatch(recivedCountries(countries, message));
       })
       .catch((e) => console.log(e));
   };
@@ -88,62 +84,6 @@ export function fetchCountryDetail(countryId) {
       .catch((e) => console.log(e));
   };
 }
-// filterBy -> {continent: 'un continente', population: 1 || -1, etc}
-const filterCountriesBy = (countries, filterBy, filters) => {
-  let filtered = [...countries];
-  filterBy = filterBy || {};
-
-  if (filterBy.continent) {
-    filtered = filters.filterByContinent(filtered, filterBy.continent);
-  }
-
-  if (filterBy.activityId) {
-    filtered = filters.filterByActivity(filtered, filterBy.activityId);
-  }
-
-  if (filterBy.population) {
-    filtered = filters.orderByPopulation(filtered, filterBy.population);
-  }
-
-  if (filterBy.name) {
-    filtered = filters.orderByName(filtered, filterBy.name);
-  }
-
-  return filtered;
-};
-
-const filterByContinent = (countries, continent) =>
-  countries.filter((country) => country.continent === continent);
-
-  const filterByActivity = (countries, activityId) => {
-    return countries.filter((c) =>
-      c.activities.map((a) => a.id).includes(Number.parseInt(activityId))
-    );
-  };
-
-const orderByPopulation = (countries, order) =>
-  countries.sort(function (a, b) {
-    return order * (a.population - b.population);
-  });
-
-const orderByName = (countries, order) =>
-  countries.sort(function (a, b) {
-    var nameA = a.name.toUpperCase();
-    var nameB = b.name.toUpperCase();
-    if (nameA < nameB) {
-      return -1 * order;
-    }
-    if (nameA > nameB) {
-      return 1 * order;
-    }
-    return 0;
-  });
-const filters = {
-  filterByContinent,
-  filterByActivity,
-  orderByPopulation,
-  orderByName,
-};
 
 // export function showCountries(page = 0, name) {
 //   let url = `${GET_COUNTRIES_URL}?page=${page}&step=${PAGINATION_STEP}`;

@@ -2,9 +2,8 @@ import { useDispatch, useSelector } from "react-redux";
 import { forwardPage, goBackPage } from "../../actions";
 import "./PaginationBar.css";
 
-export default function PaginationBar() {
+export default function PaginationBar({countries}) {
   const dispatch = useDispatch();
-  const countriesList = useSelector(state => state.countriesList);
   const pagination = useSelector((state) => state.pagination);
 
   const goForward = () => {
@@ -16,7 +15,7 @@ export default function PaginationBar() {
   };
 
   const hasNext = () => {
-    return pagination.end > countriesList.length ? false : true;
+    return pagination.end > countries.length ? false : true;
   };
   const hasPrev = () => {
     return pagination.start > 0 ? true : false;

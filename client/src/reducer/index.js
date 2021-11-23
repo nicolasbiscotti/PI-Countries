@@ -5,12 +5,21 @@ import {
   GET_COUNTRIES,
   RECIVED_COUNTRIES,
   RECIVED_DETAIL,
+  FILTERED,
 } from "../actions";
+import filterCountriesBy from "../helperFunctions/filterCountriesBy";
 
 const STEP = 10;
 
 const initialState = {
   countriesList: [],
+  filteredCountries: [],
+  filtersApplied: {
+    continent: false,
+    activityId: false,
+    population: false,
+    name: false,
+  },
   message: "",
   countryDetail: {},
   isLoading: false,
@@ -33,13 +42,23 @@ export default function rootReducer(state = initialState, action) {
       return {
         ...state,
         isLoading: false,
-        countriesList: action.payload,
+        countriesList: action.payload.countries,
+        message: action.payload.message,
       };
     case RECIVED_DETAIL:
       return {
         ...state,
         isLoading: false,
         countryDetail: action.payload,
+      };
+    case FILTERED:
+      return {
+        ...state,
+        filteredCountries: filterCountriesBy(
+          state.countriesList,
+          action.payload
+        ),
+        filtersApplied: action.payload,
       };
     case RESET_PAGINATION:
       return {
@@ -77,5 +96,3 @@ export default function rootReducer(state = initialState, action) {
       return { ...state };
   }
 }
-
-

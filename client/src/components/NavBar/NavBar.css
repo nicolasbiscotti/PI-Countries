@@ -4,6 +4,10 @@
   justify-content: center;
   background-color: gainsboro;
   padding-top: 20px;
+  /* background-image: url("http://localhost:3000/images/ventanilla.jpg");
+  background-size: cover;
+  background-position: center;
+  height: 20vh; */
 }
 #navbar-center {
   width: 80%;
