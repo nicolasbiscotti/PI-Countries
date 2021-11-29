@@ -18,39 +18,40 @@ export default function FilterDisplay({
 
   return (
     <div id="filter-display-wrap">
-      Filters Display
-      <Filter
-        title="--Filter by continent--"
-        filter={{ type: "continent" }}
-        options={continents}
-        applyFilter={applyFilter}
-        filterOn={filters.continent}
-        turnOffFilter={turnOffFilter}
-      />
-      <Filter
-        title="--filter by activities--"
-        filter={{ type: "activityId" }}
-        options={activities}
-        applyFilter={applyFilter}
-        filterOn={filters.activityId}
-        turnOffFilter={turnOffFilter}
-      />
-      <Filter
-        title="--order by country name--"
-        filter={{ type: "name" }}
-        options={[1, -1]}
-        applyFilter={applyFilter}
-        filterOn={filters.name}
-        turnOffFilter={turnOffFilter}
-      />
-      <Filter
-        title="--order by population--"
-        filter={{ type: "population" }}
-        options={[1, -1]}
-        applyFilter={applyFilter}
-        filterOn={filters.population}
-        turnOffFilter={turnOffFilter}
-      />
+      <div id="filter-display-center">
+        <Filter
+          title="--Filter by continent--"
+          filter={{ type: "continent" }}
+          options={continents.map((c) => ({ id: c, name: c }))}
+          applyFilter={applyFilter}
+          filterOn={filters.continent}
+          turnOffFilter={turnOffFilter}
+        />
+        <Filter
+          title="--filter by activities--"
+          filter={{ type: "activityId" }}
+          options={activities}
+          applyFilter={applyFilter}
+          filterOn={filters.activityId}
+          turnOffFilter={turnOffFilter}
+        />
+        <Filter
+          title="--order by country name--"
+          filter={{ type: "name" }}
+          options={getOrdersOptions()}
+          applyFilter={applyFilter}
+          filterOn={filters.name}
+          turnOffFilter={turnOffFilter}
+        />
+        <Filter
+          title="--order by population--"
+          filter={{ type: "population" }}
+          options={getOrdersOptions()}
+          applyFilter={applyFilter}
+          filterOn={filters.population}
+          turnOffFilter={turnOffFilter}
+        />
+      </div>
     </div>
   );
 }
@@ -67,11 +68,16 @@ const getContinents = (countries) =>
 const getActivities = (countries) =>
   countries.reduce((result, country) => {
     for (const activity of country.activities) {
-      //   if (result.map((a) => a.id).indexOf(activity.id) < 0) {
-      // result.push({ id: activity.id, value: activity.name });
-      if (result.indexOf(activity.id) < 0) {
-        result.push(activity.id);
+      if (result.map((a) => a.id).indexOf(activity.id) < 0) {
+        result.push({ id: activity.id, name: activity.name });
       }
     }
     return result;
   }, []);
+
+const getOrdersOptions = () => {
+  return [
+    { id: 1, name: "up" },
+    { id: -1, name: "down" },
+  ];
+};

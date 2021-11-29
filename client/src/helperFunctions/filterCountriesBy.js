@@ -13,26 +13,3 @@ export default (countries, filterBy) => {
 
   return filtered;
 };
-
-//   const filterCountriesBy = (countries, filterBy, filters) => {
-//     let filtered = [...countries];
-//     filterBy = filterBy || {};
-
-//     if (filterBy.continent) {
-//       filtered = filters.filterByContinent(filtered, filterBy.continent);
-//     }
-
-//     if (filterBy.activityId) {
-//       filtered = filters.filterByActivity(filtered, filterBy.activityId);
-//     }
-
-//     if (filterBy.population) {
-//       filtered = filters.orderByPopulation(filtered, filterBy.population);
-//     }
-
-//     if (filterBy.name) {
-//       filtered = filters.orderByName(filtered, filterBy.name);
-//     }
-
-//     return filtered;
-//   };

@@ -15,7 +15,7 @@ export default function PaginationBar({countries}) {
   };
 
   const hasNext = () => {
-    return pagination.end > countries.length ? false : true;
+    return pagination.end >= countries.length ? false : true;
   };
   const hasPrev = () => {
     return pagination.start > 0 ? true : false;

@@ -1,10 +1,13 @@
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { fetchCountries, filteredCountries } from "../../actions";
+import {
+  fetchCountries,
+  filterCountries,
+  resetPagination,
+} from "../../actions";
 import CountriesDisplay from "../../components/CountriesDisplay/CountriesDisplay";
 import FilterDisplay from "../../components/FilterDisplay/FilterDisplay";
 import NavBar from "../../components/NavBar/NavBar";
-import Search from "../../components/Search/Search";
 
 export default function Home() {
   const dispatch = useDispatch();
@@ -24,7 +27,8 @@ export default function Home() {
     setFilters(() => filtersApplied);
     setCountries(() => {
       if (checkFilters(filtersApplied)) {
-        dispatch(filteredCountries(filtersApplied));
+        dispatch(resetPagination());
+        dispatch(filterCountries(filtersApplied));
         return filteredList;
       } else {
         return countriesList;
@@ -48,7 +52,8 @@ export default function Home() {
       ...filters,
       [filter.type]: filter.value,
     };
-    dispatch(filteredCountries(filterBy));
+    dispatch(resetPagination());
+    dispatch(filterCountries(filterBy));
   };
 
   const turnOffFilter = (filter) => {
@@ -56,13 +61,13 @@ export default function Home() {
       ...filters,
       [filter.type]: false,
     };
-    dispatch(filteredCountries(filterBy));
+    dispatch(resetPagination());
+    dispatch(filterCountries(filterBy));
   };
 
   return (
     <React.Fragment>
       <NavBar />
-      <Search />
       <FilterDisplay
         countries={countries}
         filters={filters}

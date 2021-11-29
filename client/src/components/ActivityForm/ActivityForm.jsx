@@ -1,6 +1,7 @@
 import axios from "axios";
 import { useState } from "react";
 import { useSelector } from "react-redux";
+import { Link } from "react-router-dom";
 import { orderByName } from "../../helperFunctions/filters";
 import "./ActivityForm.css";
 
@@ -38,6 +39,9 @@ export default function ActivityForm() {
     }
     if (!input.season) {
       errors.season = "Season is invalid";
+    }
+    if (!input.countriesId.length) {
+      errors.countriesId = "No countries selected";
     }
     return errors;
   };
@@ -130,6 +134,7 @@ export default function ActivityForm() {
             <input
               onChange={(e) => activityHandler(e)}
               type="number"
+              placeholder="duracion debe ser de 15 a 240 minutos"
               name="duration"
               id="minutes"
               value={activity.duration}
@@ -210,7 +215,7 @@ export default function ActivityForm() {
                 {
                   countriesList.find((c) => c.id === Number.parseInt(country))
                     .name
-                }
+                }{" "}
                 X
               </span>
             ))}
@@ -226,6 +231,7 @@ export default function ActivityForm() {
               Create
             </button>
           </p>
+          <Link to="../countries">Go Back</Link>
         </section>
       </form>
     </div>

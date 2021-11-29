@@ -1,6 +1,7 @@
 import { useDispatch } from "react-redux";
 import { Link } from "react-router-dom";
 import { fetchCountries } from "../../actions";
+import Search from "../Search/Search";
 import "./NavBar.css";
 
 export default function NavBar() {
@@ -20,6 +21,7 @@ export default function NavBar() {
         <Link to="/countries" onClick={goHomeHandler} id="navbar-title">
           Henry Countries
         </Link>
+        <Search />
         <Link to="/add_activity" onClick={goTaAddActivity}>
           Add Activity
         </Link>

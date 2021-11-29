@@ -5,7 +5,7 @@ import {
   GET_COUNTRIES,
   RECIVED_COUNTRIES,
   RECIVED_DETAIL,
-  FILTERED,
+  FILTER_COUNTRIES,
 } from "../actions";
 import filterCountriesBy from "../helperFunctions/filterCountriesBy";
 
@@ -51,7 +51,7 @@ export default function rootReducer(state = initialState, action) {
         isLoading: false,
         countryDetail: action.payload,
       };
-    case FILTERED:
+    case FILTER_COUNTRIES:
       return {
         ...state,
         filteredCountries: filterCountriesBy(

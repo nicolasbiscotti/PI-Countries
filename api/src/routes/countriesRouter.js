@@ -108,7 +108,7 @@ const toCountries = (countries) => {
     return {
       countryId: country.cca3,
       name: country.name.common,
-      flagURI: country.flags[0],
+      flagURI: country.flags[1],
       continent: country.continents[0],
       capital: country.capital ? country.capital[0] : "non capital",
       subregion: country.subregion,

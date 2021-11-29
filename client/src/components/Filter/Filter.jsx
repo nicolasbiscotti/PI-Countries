@@ -1,5 +1,5 @@
 import "./Filter.css";
-
+// la prop options espero un array de objs -> {id: to use as value, name: to show the user}
 export default function Filter({
   title,
   filter,
@@ -13,23 +13,21 @@ export default function Filter({
     applyFilter(filter);
   };
   return (
-    <div id="filter-wrap">
-      {!filterOn ? (
-        <select
-          onChange={(e) => onChangeHandler(e)}
-          name="continent"
-          id="selec_continent"
-        >
-          <option value="">{title}</option>
-          {options.map((option) => (
-            <option key={option} value={option}>
-              {option}
-            </option>
-          ))}
-        </select>
-      ) : (
-        <span onClick={() => turnOffFilter(filter)}>{filterOn} X</span>
-      )}
+    <div className="filter-wrap">
+      <select
+        onChange={(e) => onChangeHandler(e)}
+        name={`selec_${filter.type}`}
+        id={`selec_${filter.type}`}
+      >
+        <option value="" onClick={() => turnOffFilter(filter)}>
+          {title}
+        </option>
+        {options.map((option) => (
+          <option key={option.id} value={option.id}>
+            {option.name}
+          </option>
+        ))}
+      </select>
     </div>
   );
 }

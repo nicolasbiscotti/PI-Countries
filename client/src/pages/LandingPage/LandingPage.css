@@ -8,7 +8,17 @@
   background-position: center;
   height: 100vh;
 }
+#landing-page-center {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: center;
+  width: 50vw;
+  padding: 5vh;
+  background-color: rgba(101, 85, 85, 0.53);
+}
 #landing-page-title {
+  font-size: 3.2em;
   margin: 0;
   padding: 10px;
   color: aliceblue;
@@ -19,7 +29,7 @@
   color: ghostwhite;
   font-weight: 900;
   /* border-radius: 20px; */
-  font-size: 1.2em;
+  font-size: 1.6em;
   text-decoration: none;
 }
 #landing-page-wrap a:hover {

@@ -1,15 +1,26 @@
 #country-wrap {
-  max-width: 35%;
+  max-width: 22vw;
   text-align: center;
-  margin-top: 10px;
+  margin-top: 5vh;
+  padding: 5vh;
+  background-color: white;
+  box-shadow: 2px 4px silver;
+  opacity: 80%;
+}
+#country-wrap:hover {
+  cursor: pointer;
+  max-width: 26vw;
+  box-shadow: 4px 6px rgb(151, 151, 151);
+  opacity: 100%;
+}
+#country-wrap a {
+  text-decoration: none;
+  color: black;
 }
 #country-wrap img {
   max-width: 100%;
-  background-color: gainsboro;
   border: 1px black solid;
-  opacity: 90%;
 }
 #country-wrap img:hover {
   cursor: pointer;
-  opacity: 100%;
 }

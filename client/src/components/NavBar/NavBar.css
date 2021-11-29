@@ -2,44 +2,39 @@
   display: flex;
   flex-wrap: wrap;
   justify-content: center;
-  background-color: gainsboro;
-  padding-top: 20px;
-  /* background-image: url("http://localhost:3000/images/ventanilla.jpg");
+  background-color: limegreen;
+  padding-top: 10px;
+  background-image: url("http://localhost:3000/images/cartel.jpg");
   background-size: cover;
   background-position: center;
-  height: 20vh; */
+  height: 20vh;
 }
 #navbar-center {
-  width: 80%;
+  width: 90vw;
   display: flex;
   flex-wrap: wrap;
   justify-content: space-between;
   align-items: center;
-}
-#navbar-wrap h1 {
-  margin: 0;
-  padding: 25px 0 15px 0;
 }
 #navbar-wrap a {
   padding: 15px;
   background-color: deepskyblue;
   color: ghostwhite;
   font-weight: 900;
-  border-radius: 20px;
   font-size: 1.2em;
   text-decoration: none;
+  opacity: 90%;
 }
 #navbar-wrap a:hover {
   background-color: dodgerblue;
   cursor: pointer;
 }
 #navbar-wrap #navbar-title {
-  background-color: transparent;
-  color: slategray;
-  font-size: 1.6em;
+  background-color: rgba(101, 85, 85, 0.53);
+  color: whitesmoke;
+  font-size: 1.2em;
 }
 #navbar-wrap #navbar-title:hover {
-  background-color: transparent;
+  background-color: lime;
   color: black;
-  font-size: 1.6em;
 }

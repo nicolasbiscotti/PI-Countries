@@ -3,10 +3,6 @@
   display: flex;
   flex-wrap: wrap;
   justify-content: space-around;
-  /* background-image: url("http://localhost:3000/images/mapa-y-camara.jpg");
-  background-size: cover;
-  background-position: center;
-  height: 100vh; */
 }
 #country-detail-center {
   width: 40vw;
@@ -15,5 +11,5 @@
   width: 40vw;
 }
 #country-detail-center img {
-    width: 40vw;
+  width: 40vw;
 }

@@ -34,33 +34,3 @@ export default function CountriesDisplay({ countries, message }) {
     </div>
   );
 }
-
-// const STEP = 10;
-// const LENGTH = countries.length;
-
-// const initialPage = {
-//   start: 0,
-//   end: STEP - 1,
-// };
-// const [page, setPage] = useState(initialPage);
-
-// const forwardPage = () => {
-//   setPage((page) => {
-//     let start = page.end;
-//     let end = start + STEP;
-//     return { start, end };
-//   });
-// };
-// const goBackPage = () => {
-//   setPage((page) => {
-//     let end = page.start;
-//     let start = end - STEP > 0 ? end - STEP : 0;
-//     return { start, end };
-//   });
-// };
-// const hasNext = () => {
-//   return page.end > LENGTH ? false : true;
-// };
-// const hasPrev = () => {
-//   return page.start > 0 ? true : false;
-// };
