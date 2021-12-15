@@ -1,7 +1,7 @@
 import axios from "axios";
 
 export const PAGINATION_STEP = 10;
-export const GET_COUNTRIES_URL = "http://localhost:3001/countries";
+export const GET_COUNTRIES_URL = "/countries";
 
 // Actions
 export const FILTER_COUNTRIES = "FILTERED";
