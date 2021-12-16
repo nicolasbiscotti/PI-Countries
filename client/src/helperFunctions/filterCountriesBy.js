@@ -1,7 +1,7 @@
 import filters from "./filters";
 
 // filterBy -> {continent: 'un continente', population: 1 || -1, etc}
-export default (countries, filterBy) => {
+const filterCountriesBy = (countries, filterBy) => {
   let filtered = [...countries];
   filterBy = filterBy || {};
 
@@ -13,3 +13,5 @@ export default (countries, filterBy) => {
 
   return filtered;
 };
+
+export default filterCountriesBy;
